@@ -123,6 +123,39 @@ app.get("/statement/date", verifyIfExistsAccountCPF, (request, response) => {
     return response.json(statement);
 });
 
+//atualizar dados
+app.put("/account", verifyIfExistsAccountCPF,(request, response) => {
+    const { name } = request.body;
+    const { customer } = request;
 
+    customer.name = name;
+
+    return response.status(201).send();
+});
+
+//buscar dados da conta 
+app.get("/account", verifyIfExistsAccountCPF,(request, response) => {
+    const { customer } = request;
+
+    return response.json(customer);
+})
+
+app.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
+    const { customer } = request;
+    
+    //splice
+    customers.splice(customer, 1);
+
+    return response.status(200).json(customers);
+});
+
+app.get("/balance", verifyIfExistsAccountCPF, (request, response) => {
+    const { customer } = request;
+
+    const balance = getBalance(customer.statement);
+    
+    return response.json(balance);
+
+});
 
 app.listen(3330);
